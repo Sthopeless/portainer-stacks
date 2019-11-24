@@ -27,6 +27,31 @@ services:
     restart: unless-stopped
     networks:
       - grafana_net
+  
+  chronograf:
+    image: "chronograf:latest"
+    container_name: "grafana_chronograf"
+    ports:
+      - "8888:8888"
+    volumes:
+      - "grafana_chronograf:/var/lib/chronograf"
+    restart: unless-stopped
+    networks:
+      - grafana_net
+  
+  kapatitor:
+    image: "kapacitor:latest"
+    container_name: "grafana_kapacitor"
+    ports:
+      - "9092:9092"
+    volumes:
+      - "grafana_kapacitor:/var/lib/kapacitor"
+    environment:
+      - "KAPACITOR_HOSTNAME=shuttlenas"
+      - "KAPACITOR_INFLUXDB_0_URLS_0=http://192.168.178.64:8086"
+    networks:
+      - grafana_net
+    restart: unless-stopped
 
 networks:
   grafana_net:
