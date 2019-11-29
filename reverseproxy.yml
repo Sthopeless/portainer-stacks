@@ -1,8 +1,10 @@
 version: '2'
 
+# Inspired by https://creekorful.me/how-to-install-traefik-2-docker-swarm/
 services:
-  reverse-proxy:
+  reverseproxy:
     image: traefik:latest
+    container_name: reverse-proxy_traefik
     command:
       - "--providers.docker.endpoint=unix:///var/run/docker.sock"
       #- "--providers.docker.swarmMode=true"
