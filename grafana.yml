@@ -1,57 +1,58 @@
 version: "2"
 services:
   grafana:
+    # Default account: admin | admin
     image: "grafana/grafana:latest"
-    container_name: "grafana_grafana"
+    container_name: "gf_grafana"
     ports:
       - "3300:3000"
     volumes:
-      - "grafana_storage:/var/lib/grafana"
+      - "gf_storage:/var/lib/grafana"
     environment:
       - "GF_SERVER_ROOT_URL=http://shuttlenas:3300"
     restart: unless-stopped
     networks:
-      - grafana_net
+      - gf_net
   
   influxdb:
     image: "influxdb:latest"
-    container_name: "grafana_influx"
+    container_name: "gf_influx"
     ports:
       - "8086:8086"
     volumes:
-      - "grafana_influxdb:/var/lib/influxdb"
+      - "gf_influxdb:/var/lib/influxdb"
     environment:
       - "INFLUXDB_GRAPHITE_ENABLED=true"
       #- "INFLUXDB_ADMIN_USER=detlefs"
       #- "INFLUXDB_ADMIN_PASSWORD=K1ngk0ng"
     restart: unless-stopped
     networks:
-      - grafana_net
+      - gf_net
   
   chronograf:
     image: "chronograf:latest"
-    container_name: "grafana_chronograf"
+    container_name: "gf_chronograf"
     ports:
       - "8888:8888"
     volumes:
-      - "grafana_chronograf:/var/lib/chronograf"
+      - "gf_chronograf:/var/lib/chronograf"
     restart: unless-stopped
     networks:
-      - grafana_net
+      - gf_net
   
   kapatitor:
     image: "kapacitor:latest"
-    container_name: "grafana_kapacitor"
+    container_name: "gf_kapacitor"
     ports:
       - "9092:9092"
     volumes:
-      - "grafana_kapacitor:/var/lib/kapacitor"
+      - "gf_kapacitor:/var/lib/kapacitor"
     environment:
       - "KAPACITOR_HOSTNAME=shuttlenas"
       - "KAPACITOR_INFLUXDB_0_URLS_0=http://192.168.178.64:8086"
     networks:
-      - grafana_net
+      - gf_net
     restart: unless-stopped
 
 networks:
-  grafana_net:
+  gf_net:
