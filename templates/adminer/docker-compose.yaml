@@ -3,6 +3,7 @@ services:
   adminer:
     image: adminer
     container_name: adminer
+    hostname: adminer
     network_mode: host
     ports:
       - ${PORT}:8080
